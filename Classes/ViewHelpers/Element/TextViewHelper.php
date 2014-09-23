@@ -121,7 +121,6 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 		$textStreamContext = $this->getTextStreamContext();
 
 		$line = '';
-		$wordWidth = 0;
 		$usedWidth = 0;
 		$words = preg_split('#([\s,.-])#', $content, NULL, PREG_SPLIT_DELIM_CAPTURE);
 
@@ -131,6 +130,10 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 		$availableWidth = $width - $currentX;
 
 		foreach ($words as $word) {
+			if ($word === '') {
+				continue;
+			}
+
 			$wordWidth = $this->calculateWordWidth($word);
 
 			if ($usedWidth + $wordWidth > $availableWidth) {
@@ -151,7 +154,7 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 			$usedWidth += $wordWidth;
 		}
 
-		if ($line !== '' && $wordWidth) {
+		if ($line !== '' && $usedWidth) {
 			$page->drawText($line, $currentX, $currentY);
 			$currentX += $usedWidth;
 		}
