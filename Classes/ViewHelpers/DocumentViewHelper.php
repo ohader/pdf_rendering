@@ -25,13 +25,12 @@ class DocumentViewHelper extends AbstractDocumentViewHelper {
 	 * @param string $defaultFont
 	 * @param string $defaultFontSize
 	 * @param array $defaultColor
-	 * @return NULL|string
 	 */
 	public function render($fileName, $defaultFont = NULL, $defaultFontSize = NULL, array $defaultColor = NULL) {
 		$fileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName);
 
 		if (!file_exists($fileName)) {
-			return '';
+			return;
 		}
 
 		$this->initializeDefaultFont($defaultFont);
@@ -45,19 +44,19 @@ class DocumentViewHelper extends AbstractDocumentViewHelper {
 		$this->unsetDocument();
 		$this->unsetDefaults();
 
-		return $document->render();
+		$content = $document->render();
+		$this->getResponse()->setContent($content);
 	}
 
 	/**
-	 * @return NULL|\ZendPdf\PdfDocument
+	 * @return NULL|\TYPO3\CMS\Extbase\Mvc\Response
 	 */
-	protected function getResponseDocument() {
-		$responseDocument = NULL;
-		if ($this->templateVariableContainer->exists('documentIdentifier')) {
-			$documentIdentifier = $this->templateVariableContainer->get('documentIdentifier');
-			$responseDocument = \OliverHader\PdfRendering\DocumentRegistry::create()->get($documentIdentifier);
+	protected function getResponse() {
+		$response = NULL;
+		if ($this->templateVariableContainer->exists('response')) {
+			$response = $this->templateVariableContainer->get('response');
 		}
-		return $responseDocument;
+		return $response;
 	}
 
 	protected function initializeDefaultFont($defaultFont = NULL) {

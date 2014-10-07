@@ -23,6 +23,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PdfView extends \TYPO3\CMS\Fluid\View\StandaloneView {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Response
+	 * @inject
+	 */
+	protected $response;
+
+	/**
 	 * @return PdfView
 	 */
 	static public function create() {
@@ -45,9 +51,10 @@ class PdfView extends \TYPO3\CMS\Fluid\View\StandaloneView {
 	public function render($actionName = NULL) {
 		$documentIdentifier = uniqid('document', TRUE);
 		$this->assign('documentIdentifier', $documentIdentifier);
+		$this->baseRenderingContext->getTemplateVariableContainer()->add('response', $this->response);
 
-		$content = parent::render($actionName);
-		return \ZendPdf\PdfDocument::parse($content);
+		parent::render($actionName);
+		return \ZendPdf\PdfDocument::parse($this->response->getContent());
 	}
 
 }
