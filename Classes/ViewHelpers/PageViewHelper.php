@@ -48,9 +48,11 @@ class PageViewHelper extends AbstractDocumentViewHelper {
 		$defaultFont = $this->getVariable('defaultFont');
 		$defaultFontSize = $this->getVariable('defaultFontSize');
 		$currentColor = $this->getVariable('currentColor');
+		$currentCharacterSpacing = $this->getVariable('currentCharacterSpacing');
 
 		$page->setFont($defaultFont, $defaultFontSize);
 		$page->setFillColor($currentColor);
+		$page->setCharacterSpacing($currentCharacterSpacing);
 	}
 
 }

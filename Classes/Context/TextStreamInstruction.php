@@ -42,6 +42,7 @@ class TextStreamInstruction {
 	protected $fontSize;
 	protected $color;
 	protected $text;
+	protected $characterSpacing;
 
 	public function getFont() {
 		return $this->font;
@@ -76,6 +77,22 @@ class TextStreamInstruction {
 
 	public function setText($text) {
 		$this->text = $text;
+		return $this;
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getCharacterSpacing() {
+		return $this->characterSpacing;
+	}
+
+	/**
+	 * @param float $characterSpacing
+	 * @return TextStreamInstruction
+	 */
+	public function setCharacterSpacing($characterSpacing) {
+		$this->characterSpacing = $characterSpacing;
 		return $this;
 	}
 

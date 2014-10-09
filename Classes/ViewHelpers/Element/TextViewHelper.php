@@ -106,6 +106,12 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 			$page->setFillColor($instruction->getColor());
 		}
 
+		if ($instruction->getCharacterSpacing() !== NULL) {
+			$revertInstruction->setCharacterSpacing($this->getVariable('currentCharacterSpacing'));
+			$this->setVariable('currentCharacterSpacing', $instruction->getCharacterSpacing());
+			$page->setCharacterSpacing($instruction->getCharacterSpacing());
+		}
+
 		return $revertInstruction;
 	}
 

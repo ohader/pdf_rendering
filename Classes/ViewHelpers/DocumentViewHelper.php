@@ -25,8 +25,9 @@ class DocumentViewHelper extends AbstractDocumentViewHelper {
 	 * @param string $defaultFont
 	 * @param string $defaultFontSize
 	 * @param array $defaultColor
+	 * @param float $defaultCharacterSpacing
 	 */
-	public function render($fileName, $defaultFont = NULL, $defaultFontSize = NULL, array $defaultColor = NULL) {
+	public function render($fileName, $defaultFont = NULL, $defaultFontSize = NULL, array $defaultColor = NULL, $defaultCharacterSpacing = 0.0) {
 		$fileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName);
 
 		if (!file_exists($fileName)) {
@@ -36,6 +37,7 @@ class DocumentViewHelper extends AbstractDocumentViewHelper {
 		$this->initializeDefaultFont($defaultFont);
 		$this->initializeDefaultFontSize($defaultFontSize);
 		$this->initializeDefaultColor($defaultColor);
+		$this->initializeDefaultStyle($defaultCharacterSpacing);
 
 		$document = \ZendPdf\PdfDocument::load($fileName);
 
@@ -97,6 +99,14 @@ class DocumentViewHelper extends AbstractDocumentViewHelper {
 		$this->setVariable('currentColor', $color, TRUE);
 	}
 
+	/**
+	 * @param float $defaultCharacterSpacing
+	 */
+	protected function initializeDefaultStyle($defaultCharacterSpacing = 0.0) {
+		$this->setVariable('defaultCharacterSpacing', $defaultCharacterSpacing);
+		$this->setVariable('currentCharacterSpacing', $defaultCharacterSpacing);
+	}
+
 	protected function unsetDefaults() {
 		$this->unsetVariable('defaultFont');
 		$this->unsetVariable('currentFont');
@@ -104,6 +114,8 @@ class DocumentViewHelper extends AbstractDocumentViewHelper {
 		$this->unsetVariable('currentFontSize');
 		$this->unsetVariable('defaultColor');
 		$this->unsetVariable('currentColor');
+		$this->unsetVariable('defaultCharacterSpacing');
+		$this->unsetVariable('currentCharacterSpacing');
 	}
 
 }
