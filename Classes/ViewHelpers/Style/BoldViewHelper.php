@@ -23,8 +23,6 @@ use OliverHader\PdfRendering\ViewHelpers\AbstractDocumentViewHelper;
 class BoldViewHelper extends AbstractDocumentViewHelper {
 
 	/**
-	 * @param string $fontName
-	 * @param int $fontSize
 	 * @return string
 	 */
 	public function render() {
