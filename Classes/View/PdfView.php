@@ -57,4 +57,14 @@ class PdfView extends \TYPO3\CMS\Fluid\View\StandaloneView {
 		return \ZendPdf\PdfDocument::parse($this->response->getContent());
 	}
 
+	/**
+	 * Renders and saves the PDF document to a file.
+	 *
+	 * @param string $filePath
+	 * @param string $actionName
+	 */
+	public function save($filePath, $actionName = NULL) {
+		$this->render($actionName)->save($filePath);
+	}
+
 }
