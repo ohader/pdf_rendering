@@ -14,7 +14,7 @@ namespace OliverHader\PdfRendering\ViewHelpers\Initialize;
  * The TYPO3 project - inspiring people to share!
  */
 
-use OliverHader\PdfRendering\Utility\ZendPdfUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use OliverHader\PdfRendering\ViewHelpers\AbstractDocumentViewHelper;
 
 /**
@@ -28,7 +28,9 @@ class FontViewHelper extends AbstractDocumentViewHelper {
 	 * @return void
 	 */
 	public function render($fontFile) {
-		$font = ZendPdfUtility::getFont($fontFile);
+		\ZendPdf\Font::fontWithPath(
+			GeneralUtility::getFileAbsFileName($fontFile)
+		);
 	}
 
 }
