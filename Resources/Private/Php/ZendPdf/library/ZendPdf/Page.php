@@ -1107,8 +1107,9 @@ class Page
      */
     public function drawContentStream($cs, $x1, $y1, $x2, $y2)
     {
-        /** @todo implementation */
-        return $this;
+		$this->_addProcSet('PDF');
+		$this->_contents .= $cs->__get('value');
+		return $this;
     }
 
     /**
