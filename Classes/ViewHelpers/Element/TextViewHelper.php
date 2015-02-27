@@ -18,7 +18,7 @@ use OliverHader\PdfRendering\Context\TextStreamInstruction;
 use OliverHader\PdfRendering\ViewHelpers\AbstractDocumentViewHelper;
 
 /**
- * Class TotalViewHelper
+ * Class TextViewHelper
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class TextViewHelper extends AbstractDocumentViewHelper {
