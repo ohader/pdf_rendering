@@ -25,12 +25,14 @@ class PdfViewHelper extends AbstractDocumentViewHelper {
 
 	/**
 	 * @param string $fileName
-	 * @param int $x
-	 * @param int $y
+	 * @param float $x
+	 * @param float $y
+	 * @param float $scaleX
+	 * @param float $scaleY
 	 * @param int $page
 	 * @return void
 	 */
-	public function render($fileName, $x, $y, $page = 0) {
+	public function render($fileName, $x, $y, $scaleX = 1, $scaleY = 1, $page = 0) {
 		if (!$this->hasPage()) {
 			return;
 		}
@@ -43,6 +45,7 @@ class PdfViewHelper extends AbstractDocumentViewHelper {
 
 		$this->getPage()->saveGS();
 		$this->getPage()->translate($x, $y);
+		$this->getPage()->scale($scaleX, $scaleY);
 		$this->getPage()->drawContentStream($page->getPageDictionary()->__get('Contents'), 0,0,0,0);
 		$this->getPage()->restoreGS();
 	}
