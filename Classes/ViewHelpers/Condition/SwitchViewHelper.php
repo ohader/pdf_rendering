@@ -43,6 +43,7 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper {
 	 */
 	public function render($expression, $all = FALSE) {
 		$content = '';
+		$all = (bool)$all;
 		$this->backupSwitchState();
 		$templateVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
 
@@ -53,7 +54,7 @@ class SwitchViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\SwitchViewHelper {
 		foreach ($this->childNodes as $childNode) {
 			if (
 				!$childNode instanceof \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode
-				|| $childNode->getViewHelperClassName() !== 'TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper'
+				|| !$childNode->getUninitializedViewHelper() instanceof \TYPO3\CMS\Fluid\ViewHelpers\CaseViewHelper
 			) {
 				continue;
 			}
