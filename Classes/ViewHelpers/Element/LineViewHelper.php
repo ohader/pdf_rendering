@@ -23,19 +23,36 @@ use OliverHader\PdfRendering\ViewHelpers\AbstractDocumentViewHelper;
 class LineViewHelper extends AbstractDocumentViewHelper {
 
 	/**
-	 * @param string $fileName
-	 * @param int $fromX
-	 * @param int $fromY
-	 * @param int $toX
-	 * @param int $toY
+	 * @param float $fromX
+	 * @param float $fromY
+	 * @param float $toX
+	 * @param float $toY
+	 * @param float $lineWidth
 	 * @return void
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 */
-	public function render($fromX, $fromY, $toX, $toY) {
+	public function render($fromX, $fromY, $toX = NULL, $toY = NULL, $lineWidth = 1.0) {
 		if (!$this->hasPage()) {
 			return;
 		}
 
+		// Horizontal line
+		if ($toX === NULL && $toY !== NULL) {
+			$toX = $fromX;
+		// Vertical line
+		} elseif ($toY === NULL && $toX !== NULL) {
+			$toY = $fromY;
+		} elseif ($toX === NULL && $toY === NULL) {
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
+				'ViewHelper either needs to define one of parameters toX or toY',
+				1427819652
+			);
+		}
+
+		$this->getPage()->saveGS();
+		$this->getPage()->setLineWidth($lineWidth);
 		$this->getPage()->drawLine($fromX, $fromY, $toX, $toY);
+		$this->getPage()->restoreGS();
 	}
 
 }
