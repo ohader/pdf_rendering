@@ -22,7 +22,7 @@ use ZendPdf\Color\ColorInterface;
  * TextStreamInstruction
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
-class TextStreamInstruction {
+class TextStreamInstruction implements InstructionInterface {
 
 	/**
 	 * @return TextStreamInstruction
@@ -143,6 +143,26 @@ class TextStreamInstruction {
 	public function setCharacterSpacing($characterSpacing) {
 		$this->characterSpacing = $characterSpacing;
 		return $this;
+	}
+
+	/**
+	 * @param \ZendPdf\Page $page
+	 */
+	public function process(\ZendPdf\Page $page) {
+		if ($this->getFont() || $this->getFontSize()) {
+			$page->setFont(
+				$this->getFont(),
+				$this->getFontSize()
+			);
+		}
+
+		if ($this->getColor()) {
+			$page->setFillColor($this->getColor());
+		}
+
+		if ($this->getCharacterSpacing() !== NULL) {
+			$page->setCharacterSpacing($this->getCharacterSpacing());
+		}
 	}
 
 }

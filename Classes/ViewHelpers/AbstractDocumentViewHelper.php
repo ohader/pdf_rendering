@@ -121,6 +121,13 @@ class AbstractDocumentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
 	}
 
 	/**
+	 * @return bool
+	 */
+	protected function hasTextRenderContext() {
+		return $this->templateVariableContainer->exists('textRenderContext');
+	}
+
+	/**
 	 * @return NULL|\OliverHader\PdfRendering\Context\TextStreamContext
 	 */
 	protected function getTextStreamContext() {
@@ -129,6 +136,17 @@ class AbstractDocumentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
 			$textStreamContext = $this->templateVariableContainer->get('textStreamContext');
 		}
 		return $textStreamContext;
+	}
+
+	/**
+	 * @return NULL|\OliverHader\PdfRendering\Context\TextRenderContext
+	 */
+	protected function getTextRenderContext() {
+		$textRenderContext = NULL;
+		if ($this->hasTextRenderContext()) {
+			$textRenderContext = $this->templateVariableContainer->get('textRenderContext');
+		}
+		return $textRenderContext;
 	}
 
 	/**

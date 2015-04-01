@@ -15,7 +15,10 @@ namespace OliverHader\PdfRendering\ViewHelpers\Element;
  */
 
 use OliverHader\PdfRendering\Context\TextStreamInstruction;
+use OliverHader\PdfRendering\Context\TextRenderInstruction;
 use OliverHader\PdfRendering\ViewHelpers\AbstractDocumentViewHelper;
+use OliverHader\PdfRendering\Context\TextRenderContext;
+use OliverHader\PdfRendering\Context\TextStreamContext;
 
 /**
  * Class TextViewHelper
@@ -38,19 +41,25 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 			$width = $this->getPage()->getWidth();
 		}
 
-		$textStreamContext = \OliverHader\PdfRendering\Context\TextStreamContext::create();
-		$textStreamContext->setX($x)->setY($y)->setWidth($width)->setCurrentX($x)->setCurrentY($y);
+		$textRenderContext = TextRenderContext::create();
+		$textStreamContext = TextStreamContext::create()
+			->setX($x)->setY($y)->setWidth($width)
+			->setCurrentX($x)->setCurrentY($y);
 
+		$this->templateVariableContainer->add('textRenderContext', $textRenderContext);
 		$this->templateVariableContainer->add('textStreamContext', $textStreamContext);
 
 		$this->processChildren();
+		$textRenderContext->process($this->getPage());
 
 		$this->templateVariableContainer->remove('textStreamContext');
+		$this->templateVariableContainer->remove('textRenderContext');
 	}
 
 	protected function processChildren() {
 		$content = trim($this->renderChildren());
 		$content = preg_replace('#[\s]+#', ' ', $content);
+
 		$textStreamContext = $this->getTextStreamContext();
 
 		$instructions = array();
@@ -94,23 +103,20 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 
 		if ($instruction->getFont() || $instruction->getFontSize()) {
 			$revertInstruction->setFont($page->getFont())->setFontSize($page->getFontSize());
-			$page->setFont(
-				$instruction->getFont(),
-				$instruction->getFontSize()
-			);
 		}
 
 		if ($instruction->getColor()) {
 			$revertInstruction->setColor($this->getVariable('currentColor'));
 			$this->setVariable('currentColor', $instruction->getColor());
-			$page->setFillColor($instruction->getColor());
 		}
 
 		if ($instruction->getCharacterSpacing() !== NULL) {
 			$revertInstruction->setCharacterSpacing($this->getVariable('currentCharacterSpacing'));
 			$this->setVariable('currentCharacterSpacing', $instruction->getCharacterSpacing());
-			$page->setCharacterSpacing($instruction->getCharacterSpacing());
 		}
+
+		$this->getTextRenderContext()->addInstruction($instruction);
+		$instruction->process($page);
 
 		return $revertInstruction;
 	}
@@ -175,8 +181,9 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 	 * @param float $width
 	 */
 	protected function drawText($text, $x, $y, $width) {
-		$page = $this->getPage();
-		$page->drawText($text, $x, $y);
+		$textRenderInstruction = TextRenderInstruction::create()
+			->setText($text)->setX($x)->setY($y)->setWidth($width);
+		$this->getTextRenderContext()->addInstruction($textRenderInstruction);
 	}
 
 	/**
