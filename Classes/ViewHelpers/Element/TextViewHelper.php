@@ -123,7 +123,6 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 			return;
 		}
 
-		$page = $this->getPage();
 		$textStreamContext = $this->getTextStreamContext();
 
 		$line = '';
@@ -145,7 +144,7 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 
 			if ($usedWidth + $wordWidth > $availableWidth) {
 				if ($line !== '') {
-					$page->drawText($line, $currentX, $currentY);
+					$this->drawText($line, $currentX, $currentY, $usedWidth);
 					$line = '';
 				}
 				$usedWidth = 0;
@@ -162,11 +161,22 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 		}
 
 		if ($line !== '' && $usedWidth) {
-			$page->drawText($line, $currentX, $currentY);
+			$this->drawText($line, $currentX, $currentY, $usedWidth);
 			$currentX += $usedWidth;
 		}
 
 		$textStreamContext->setCurrentX($currentX)->setCurrentY($currentY);
+	}
+
+	/**
+	 * @param string $text
+	 * @param float $x
+	 * @param float $y
+	 * @param float $width
+	 */
+	protected function drawText($text, $x, $y, $width) {
+		$page = $this->getPage();
+		$page->drawText($text, $x, $y);
 	}
 
 	/**
