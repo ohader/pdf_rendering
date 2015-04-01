@@ -26,13 +26,18 @@ use OliverHader\PdfRendering\Context\TextStreamContext;
  */
 class TextViewHelper extends AbstractDocumentViewHelper {
 
+	const ARGUMENT_AlignLeft = 'left';
+	const ARGUMENT_AlignCenter = 'center';
+	const ARGUMENT_AlignRight = 'right';
+
 	/**
 	 * @param float $x
 	 * @param float $y
 	 * @param float $width
+	 * @param string $align
 	 * @return void
 	 */
-	public function render($x, $y, $width = NULL) {
+	public function render($x, $y, $width = NULL, $align = self::ARGUMENT_AlignLeft) {
 		if (!$this->hasPage()) {
 			return;
 		}
@@ -41,15 +46,19 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 			$width = $this->getPage()->getWidth();
 		}
 
+		$align = $this->sanitizeAlign($align);
+
 		$textRenderContext = TextRenderContext::create();
 		$textStreamContext = TextStreamContext::create()
 			->setX($x)->setY($y)->setWidth($width)
-			->setCurrentX($x)->setCurrentY($y);
+			->setCurrentX($x)->setCurrentY($y)
+			->setAlign($align);
 
 		$this->templateVariableContainer->add('textRenderContext', $textRenderContext);
 		$this->templateVariableContainer->add('textStreamContext', $textStreamContext);
 
 		$this->processChildren();
+		$textRenderContext->prepare($textStreamContext);
 		$textRenderContext->process($this->getPage());
 
 		$this->templateVariableContainer->remove('textStreamContext');
@@ -213,6 +222,24 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 			$width += $characterWidth / $font->getUnitsPerEm() * $fontSize;
 		}
 		return $width;
+	}
+
+	/**
+	 * @param string $align
+	 * @return string
+	 */
+	protected function sanitizeAlign($align) {
+		$alignments = array(
+			self::ARGUMENT_AlignLeft,
+			self::ARGUMENT_AlignCenter,
+			self::ARGUMENT_AlignRight
+		);
+
+		if (!in_array($align, $alignments)) {
+			$align = self::ARGUMENT_AlignLeft;
+		}
+
+		return $align;
 	}
 
 }

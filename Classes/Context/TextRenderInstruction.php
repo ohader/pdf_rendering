@@ -75,6 +75,15 @@ class TextRenderInstruction implements InstructionInterface {
 	}
 
 	/**
+	 * @param float $addX
+	 * @return TextRenderInstruction
+	 */
+	public function addX($addX) {
+		$this->x += $addX;
+		return $this;
+	}
+
+	/**
 	 * @return float
 	 */
 	public function getY() {

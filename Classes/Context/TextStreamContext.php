@@ -15,6 +15,7 @@ namespace OliverHader\PdfRendering\Context;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use OliverHader\PdfRendering\ViewHelpers\Element\TextViewHelper;
 
 /**
  * TextStreamContext
@@ -62,6 +63,11 @@ class TextStreamContext {
 	 * @var float
 	 */
 	protected $currentY;
+
+	/**
+	 * @var string
+	 */
+	protected $align;
 
 	/**
 	 * @var array|TextStreamInstruction[]
@@ -177,6 +183,43 @@ class TextStreamContext {
 	 */
 	public function getInstructions() {
 		return $this->instructions;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAlign() {
+		return $this->align;
+	}
+
+	/**
+	 * @param string $align
+	 * @return TextStreamInstruction
+	 */
+	public function setAlign($align) {
+		$this->align = $align;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAlignedLeft() {
+		return (empty($this->align) || $this->align === TextViewHelper::ARGUMENT_AlignLeft);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAlignedCenter() {
+		return ($this->align === TextViewHelper::ARGUMENT_AlignCenter);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAlignedRight() {
+		return ($this->align === TextViewHelper::ARGUMENT_AlignRight);
 	}
 
 }

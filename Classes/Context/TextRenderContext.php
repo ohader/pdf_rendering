@@ -44,6 +44,9 @@ class TextRenderContext {
 	 */
 	protected $instructionStack = array();
 
+	/**
+	 * @param InstructionInterface $instruction
+	 */
 	public function addInstruction(InstructionInterface $instruction) {
 		$this->instructionStack[] = $instruction;
 	}
@@ -54,6 +57,78 @@ class TextRenderContext {
 	public function process(Page $page) {
 		foreach ($this->instructionStack as $instruction) {
 			$instruction->process($page);
+		}
+	}
+
+	/**
+	 * @param TextStreamContext $textStreamContext
+	 */
+	public function prepare(TextStreamContext $textStreamContext) {
+		$this->prepareAlign($textStreamContext);
+	}
+
+	/**
+	 * @param TextStreamContext $textStreamContext
+	 */
+	protected function prepareAlign(TextStreamContext $textStreamContext) {
+		if ($textStreamContext->isAlignedLeft()) {
+			return;
+		}
+
+		/** @var TextRenderInstruction[] $instructions */
+		foreach ($this->arrangeTextLines() as $instructions) {
+			$this->alignTextInstructions($textStreamContext, $instructions);
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function arrangeTextLines() {
+		$textLines = array();
+
+		foreach ($this->instructionStack as $instruction) {
+			if (!$instruction instanceof TextRenderInstruction) {
+				continue;
+			}
+
+			$key = sprintf('%0.4f', $instruction->getY());
+			$textLines[$key][] = $instruction;
+		}
+
+		return $textLines;
+	}
+
+	/**
+	 * @param TextStreamContext $textStreamContext
+	 * @param array|TextRenderInstruction[] $instructions
+	 */
+	protected function alignTextInstructions(TextStreamContext $textStreamContext, array $instructions) {
+		$usedX = NULL;
+		$maximumX = $textStreamContext->getX() + $textStreamContext->getWidth();
+
+		foreach ($instructions as $instruction) {
+			$instructionUsedX = $instruction->getX() + $instruction->getWidth();
+			if ($usedX === NULL || $instructionUsedX > $usedX) {
+				$usedX = $instructionUsedX;
+			}
+		}
+
+		$availableWidth = $maximumX - $usedX;
+		if ($availableWidth <= 0) {
+			return;
+		}
+
+		if ($textStreamContext->isAlignedRight()) {
+			$deltaX = $availableWidth;
+		} elseif ($textStreamContext->isAlignedCenter()) {
+			$deltaX = $availableWidth / 2;
+		} else {
+			$deltaX = 0;
+		}
+
+		foreach ($instructions as $instruction) {
+			$instruction->addX($deltaX);
 		}
 	}
 
