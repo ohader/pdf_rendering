@@ -24,9 +24,9 @@ use OliverHader\PdfRendering\ViewHelpers\AbstractDocumentViewHelper;
 class TextViewHelper extends AbstractDocumentViewHelper {
 
 	/**
-	 * @param int $x
-	 * @param int $y
-	 * @param int $width
+	 * @param float $x
+	 * @param float $y
+	 * @param float $width
 	 * @return void
 	 */
 	public function render($x, $y, $width = NULL) {

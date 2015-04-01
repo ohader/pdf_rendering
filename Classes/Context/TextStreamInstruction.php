@@ -15,9 +15,11 @@ namespace OliverHader\PdfRendering\Context;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use ZendPdf\Resource\Font\AbstractFont;
+use ZendPdf\Color\ColorInterface;
 
 /**
- * PageView
+ * TextStreamInstruction
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class TextStreamInstruction {
@@ -38,43 +40,90 @@ class TextStreamInstruction {
 		);
 	}
 
+	/**
+	 * @var AbstractFont
+	 */
 	protected $font;
+
+	/**
+	 * @var float
+	 */
 	protected $fontSize;
+
+	/**
+	 * @var ColorInterface
+	 */
 	protected $color;
+
+	/**
+	 * @var string
+	 */
 	protected $text;
+
+	/**
+	 * @var float
+	 */
 	protected $characterSpacing;
 
+	/**
+	 * @return AbstractFont
+	 */
 	public function getFont() {
 		return $this->font;
 	}
 
+	/**
+	 * @param AbstractFont $font
+	 * @return TextStreamInstruction
+	 */
 	public function setFont($font) {
 		$this->font = $font;
 		return $this;
 	}
 
+	/**
+	 * @return float
+	 */
 	public function getFontSize() {
 		return $this->fontSize;
 	}
 
+	/**
+	 * @param float $fontSize
+	 * @return TextStreamInstruction
+	 */
 	public function setFontSize($fontSize) {
 		$this->fontSize = $fontSize;
 		return $this;
 	}
 
+	/**
+	 * @return ColorInterface
+	 */
 	public function getColor() {
 		return $this->color;
 	}
 
+	/**
+	 * @param ColorInterface $color
+	 * @return TextStreamInstruction
+	 */
 	public function setColor($color) {
 		$this->color = $color;
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getText() {
 		return $this->text;
 	}
 
+	/**
+	 * @param string $text
+	 * @return TextStreamInstruction
+	 */
 	public function setText($text) {
 		$this->text = $text;
 		return $this;

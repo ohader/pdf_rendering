@@ -17,7 +17,7 @@ namespace OliverHader\PdfRendering\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * PageView
+ * TextStreamContext
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class TextStreamContext {
@@ -38,11 +38,29 @@ class TextStreamContext {
 		);
 	}
 
+	/**
+	 * @var float
+	 */
 	protected $x;
+
+	/**
+	 * @var float
+	 */
 	protected $y;
+
+	/**
+	 * @var float
+	 */
 	protected $width;
 
+	/**
+	 * @var float
+	 */
 	protected $currentX;
+
+	/**
+	 * @var float
+	 */
 	protected $currentY;
 
 	/**
@@ -50,46 +68,81 @@ class TextStreamContext {
 	 */
 	protected $instructions = array();
 
+	/**
+	 * @return float
+	 */
 	public function getX() {
 		return $this->x;
 	}
 
+	/**
+	 * @param float $x
+	 * @return TextStreamContext
+	 */
 	public function setX($x) {
 		$this->x = $x;
 		return $this;
 	}
 
+	/**
+	 * @return float
+	 */
 	public function getY() {
 		return $this->y;
 	}
 
+	/**
+	 * @param float $y
+	 * @return TextStreamContext
+	 */
 	public function setY($y) {
 		$this->y = $y;
 		return $this;
 	}
 
+	/**
+	 * @return float
+	 */
 	public function getWidth() {
 		return $this->width;
 	}
 
+	/**
+	 * @param float $width
+	 * @return TextStreamContext
+	 */
 	public function setWidth($width) {
 		$this->width = $width;
 		return $this;
 	}
 
+	/**
+	 * @return float
+	 */
 	public function getCurrentX() {
 		return $this->currentX;
 	}
 
+	/**
+	 * @param float $currentX
+	 * @return TextStreamContext
+	 */
 	public function setCurrentX($currentX) {
 		$this->currentX = $currentX;
 		return $this;
 	}
 
+	/**
+	 * @return float
+	 */
 	public function getCurrentY() {
 		return $this->currentY;
 	}
 
+	/**
+	 * @param float $currentY
+	 * @return TextStreamContext
+	 */
 	public function setCurrentY($currentY) {
 		$this->currentY = $currentY;
 		return $this;
