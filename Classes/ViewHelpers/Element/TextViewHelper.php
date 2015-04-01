@@ -130,10 +130,11 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 		$usedWidth = 0;
 		$words = preg_split('#([\s,.-])#', $content, NULL, PREG_SPLIT_DELIM_CAPTURE);
 
+		$offsetX = $textStreamContext->getX();
 		$currentX = $textStreamContext->getCurrentX();
 		$currentY = $textStreamContext->getCurrentY();
 		$width = $textStreamContext->getWidth();
-		$availableWidth = $width - $currentX;
+		$availableWidth = $width + $offsetX - $currentX;
 
 		foreach ($words as $word) {
 			if ($word === '') {
@@ -150,7 +151,7 @@ class TextViewHelper extends AbstractDocumentViewHelper {
 				$usedWidth = 0;
 				$currentX = $textStreamContext->getX();
 				$currentY -= $this->getLineHeight();
-				$availableWidth = $width - $currentX;
+				$availableWidth = $width + $offsetX - $currentX;
 
 				$word = ltrim($word);
 				$wordWidth = $this->calculateWordWidth($word);
