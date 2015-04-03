@@ -114,6 +114,20 @@ class AbstractDocumentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
 	}
 
 	/**
+	 * @return int
+	 */
+	protected function getResolution() {
+		return $this->getVariable('resolution');
+	}
+
+	/**
+	 * @param int $resolution
+	 */
+	protected function setResolution($resolution) {
+		$this->setVariable('resolution', $resolution);
+	}
+
+	/**
 	 * @return bool
 	 */
 	protected function hasTextStreamContext() {

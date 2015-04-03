@@ -26,8 +26,9 @@ class DocumentViewHelper extends AbstractDocumentViewHelper {
 	 * @param string $defaultFontSize
 	 * @param array $defaultColor
 	 * @param float $defaultCharacterSpacing
+	 * @param int $resolution
 	 */
-	public function render($fileName, $defaultFont = NULL, $defaultFontSize = NULL, array $defaultColor = NULL, $defaultCharacterSpacing = 0.0) {
+	public function render($fileName, $defaultFont = NULL, $defaultFontSize = NULL, array $defaultColor = NULL, $defaultCharacterSpacing = 0.0, $resolution = 72) {
 		$fileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($fileName);
 
 		if (!file_exists($fileName)) {
@@ -38,6 +39,7 @@ class DocumentViewHelper extends AbstractDocumentViewHelper {
 		$this->initializeDefaultFontSize($defaultFontSize);
 		$this->initializeDefaultColor($defaultColor);
 		$this->initializeDefaultStyle($defaultCharacterSpacing);
+		$this->initializeResolution($resolution);
 
 		$document = \ZendPdf\PdfDocument::load($fileName);
 
@@ -105,6 +107,13 @@ class DocumentViewHelper extends AbstractDocumentViewHelper {
 	protected function initializeDefaultStyle($defaultCharacterSpacing = 0.0) {
 		$this->setVariable('defaultCharacterSpacing', $defaultCharacterSpacing);
 		$this->setVariable('currentCharacterSpacing', $defaultCharacterSpacing);
+	}
+
+	/**
+	 * @param int $resolution
+	 */
+	protected function initializeResolution($resolution) {
+		$this->setResolution($resolution);
 	}
 
 	protected function unsetDefaults() {
