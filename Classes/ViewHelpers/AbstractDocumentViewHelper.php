@@ -168,7 +168,7 @@ class AbstractDocumentViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
 	 * @return string
 	 */
 	protected function processSpecialCharacters($content) {
-		return html_entity_decode($content, ENT_COMPAT, 'utf-8');
+		return html_entity_decode($content, ENT_COMPAT, 'UTF-8');
 	}
 
 	/**
