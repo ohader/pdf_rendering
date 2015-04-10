@@ -135,7 +135,7 @@ class TextRenderInstruction implements InstructionInterface {
 	 * @param \ZendPdf\Page $page
 	 */
 	public function process(\ZendPdf\Page $page) {
-		$page->drawText($this->getText(), $this->getX(), $this->getY());
+		$page->drawText($this->getText(), $this->getX(), $this->getY(), 'UTF-8');
 	}
 
 }
