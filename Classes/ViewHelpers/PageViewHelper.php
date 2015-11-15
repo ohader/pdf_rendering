@@ -21,22 +21,24 @@ namespace OliverHader\PdfRendering\ViewHelpers;
 class PageViewHelper extends AbstractDocumentViewHelper {
 
 	/**
-	 * @param int $pageNumber
+	 * @param string|int $pageNumber
 	 * @return void
 	 */
 	public function render($pageNumber) {
-		$pageIndex = $pageNumber - 1;
-
 		if (!$this->hasDocument()) {
 			return;
 		}
 
 		$document = $this->getDocument();
+		if ($pageNumber === 'last') {
+			$pageNumber = count($document->pages);
+		}
 		if ($pageNumber < 1 || $pageNumber > count($document->pages)) {
 			return;
 		}
 
-		$page = $document->pages[0];
+		$pageIndex = $pageNumber - 1;
+		$page = $document->pages[$pageIndex];
 		$this->applyDefaults($page);
 
 		$this->setPage($page);
